@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mobx_demo/core/generics/resource.dart';
-import 'package:mobx_demo/features/home/view/controller/home_controller.dart';
 import 'package:mobx_demo/features/home/view/widgets/custom_drawer.dart';
+
+import '../../authentication/login/view/login_page.dart';
+import '../controller/home_controller.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -28,18 +31,29 @@ class _HomePageState extends State<HomePage> {
         key: scaffoldKey,
         drawer: CustomDrawer(
           onLogout: () async {
-            await _controller.fetchStudentList();
+            final result = await _controller.logout();
+            if (!result.hasError) {
+              await Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
+            }
           },
         ),
         appBar: AppBar(
-          actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.person),
+            ),
+          ],
           title: Hero(child: FlutterLogo(), tag: "flutter-logo"),
         ),
         body: Observer(builder: (_) {
           final students = _controller.studentList;
-          return _controller.homeStatus == Status.loading
+          return _controller.homeStatus.status == Status.loading
               ? Center(
-                  child: CircularProgressIndicator(),
+                  child: Lottie.network(
+                    "https://assets3.lottiefiles.com/packages/lf20_m7claewx.json",
+                  ),
                 )
               : ReorderableListView(
                   buildDefaultDragHandles: true,

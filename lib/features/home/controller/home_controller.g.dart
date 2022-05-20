@@ -49,6 +49,14 @@ mixin _$HomeController on _HomeControllerBase, Store {
     return _$fetchStudentListAsyncAction.run(() => super.fetchStudentList());
   }
 
+  late final _$logoutAsyncAction =
+      AsyncAction('_HomeControllerBase.logout', context: context);
+
+  @override
+  Future<Resource<void, String>> logout() {
+    return _$logoutAsyncAction.run(() => super.logout());
+  }
+
   @override
   String toString() {
     return '''

@@ -25,15 +25,34 @@ abstract class _HomeControllerBase with Store {
       //! Logout
     }
     try {
-      final result = await _dio.get(ApiRoutes.getStudentsRoute,
-          options: Options(headers: {
+      final result = await _dio.get(
+        ApiRoutes.getStudentsRoute,
+        onReceiveProgress: (count, total) {
+          //! check this out
+        },
+        options: Options(
+          headers: {
             'x-access-token': token,
-          }));
+          },
+        ),
+      );
+      await Future.delayed(Duration(seconds: 2));
       final listFromApi = result.data["students"] as List<dynamic>;
-      studentList.addAll(listFromApi.asObservable()); 
+
+      studentList.addAll(listFromApi.asObservable());
       homeStatus = Resource.success();
     } on DioError catch (e) {
       homeStatus = Resource.failed(error: e.response);
+    }
+  }
+
+  @action
+  Future<Resource<void, String>> logout() async {
+    try {
+      await _hive.delete('token');
+      return Resource.success();
+    } catch (e) {
+      return Resource.failed(error: e.toString());
     }
   }
 }
