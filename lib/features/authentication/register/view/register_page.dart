@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mobx_demo/features/authentication/register/controller/register_controller.dart';
 
 import '../../../../core/generics/resource.dart';
@@ -136,7 +137,7 @@ class RegisterPage extends StatelessWidget {
                                     }
 
                                     if (resource.status == Status.success) {
-                                      await Navigator.push(
+                                      await Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
@@ -148,10 +149,8 @@ class RegisterPage extends StatelessWidget {
                                 ? Container(
                                     width: 24,
                                     height: 24,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
-                                  )
+                                    child: Lottie.network(
+                                        "https://assets9.lottiefiles.com/private_files/lf30_ykdoon9j.json"))
                                 : Text(_controller.areCredentialsValid
                                     ? "Entrar"
                                     : "Credenciais inválidas"),

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mobx_demo/core/constants/api_routes.dart';
 import 'package:mobx_demo/core/generics/resource.dart';
@@ -10,6 +11,7 @@ class LoginController = _LoginControllerBase with _$LoginController;
 
 abstract class _LoginControllerBase with Store {
   final _dio = Dio();
+  final _hive = Hive.box<String>('credentials');
 
   @observable
   String email = '';
@@ -47,6 +49,7 @@ abstract class _LoginControllerBase with Store {
       final result = await _dio.post(ApiRoutes.loginRoute,
           data: {"email": email, "password": password});
       user = Resource.success(data: UserModel.fromMap(result.data));
+      await _hive.put('token', user.data!.token!);
       return user;
     } on DioError catch (e) {
       user = Resource.failed(error: e.response.toString());

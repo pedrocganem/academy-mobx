@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobx_demo/features/splash/view/splash_page.dart';
 
 import 'features/authentication/login/view/login_page.dart';
 
@@ -13,7 +14,7 @@ class AppWidget extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
       ),
-      home: LoginPage(),
+      home: SplashPage(),
     );
   }
 }

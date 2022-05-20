@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:mobx_demo/core/constants/api_routes.dart';
 import 'package:mobx_demo/core/generics/resource.dart';
@@ -9,6 +10,7 @@ class RegisterController = _RegisterControllerBase with _$RegisterController;
 
 abstract class _RegisterControllerBase with Store {
   final _dio = Dio();
+  final _hive = Hive.box<String>('credentials');
 
   @observable
   UserModel user = UserModel();
@@ -70,6 +72,7 @@ abstract class _RegisterControllerBase with Store {
         "last_name": lastName
       });
       user = UserModel.fromMap(result.data);
+      await _hive.put('token', user.token!);
 
       return Resource.success();
     } on DioError catch (e) {

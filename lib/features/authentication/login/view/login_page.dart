@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mobx_demo/core/generics/resource.dart';
 import 'package:mobx_demo/features/authentication/login/controller/login_controller.dart';
 import 'package:mobx_demo/features/authentication/register/view/register_page.dart';
@@ -111,7 +112,7 @@ class LoginPage extends StatelessWidget {
                               }
 
                               if (resource.status == Status.success) {
-                                await Navigator.push(
+                                await Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => HomePage()));
@@ -119,12 +120,9 @@ class LoginPage extends StatelessWidget {
                             }
                           : null,
                       child: isLoading
-                          ? Container(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                              ),
+                          ? Lottie.network(
+                              "https://assets9.lottiefiles.com/private_files/lf30_ykdoon9j.json",
+                              height: 36,
                             )
                           : Text(_controller.areCredentialsValid
                               ? "Entrar"
