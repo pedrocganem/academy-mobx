@@ -1,22 +1,92 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:lottie/lottie.dart';
+import 'package:mobx_demo/core/generics/resource.dart';
 import 'package:mobx_demo/features/home/view/widgets/custom_drawer.dart';
 
-class HomePage extends StatelessWidget {
+import '../../authentication/login/view/login_page.dart';
+import '../controller/home_controller.dart';
+
+class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    _controller.fetchStudentList();
+    super.initState();
+  }
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final _controller = HomeController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
-      drawer: CustomDrawer(
-        onLogout: () {},
-      ),
-      appBar: AppBar(
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
-        title: Hero(child: FlutterLogo(), tag: "flutter-logo"),
-      ),
-    );
+        key: scaffoldKey,
+        drawer: CustomDrawer(
+          onLogout: () async {
+            final result = await _controller.logout();
+            if (!result.hasError) {
+              await Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => LoginPage()));
+            }
+          },
+        ),
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.person),
+            ),
+          ],
+          title: Hero(child: FlutterLogo(), tag: "flutter-logo"),
+        ),
+        body: Observer(builder: (_) {
+          final students = _controller.studentList;
+          return _controller.homeStatus.status == Status.loading
+              ? Center(
+                  child: Lottie.network(
+                    "https://assets3.lottiefiles.com/packages/lf20_m7claewx.json",
+                  ),
+                )
+              : ReorderableListView(
+                  buildDefaultDragHandles: true,
+                  onReorder: ((oldIndex, newIndex) {
+                    if (oldIndex < newIndex) {
+                      newIndex--;
+                    }
+                    final item = students.removeAt(oldIndex);
+                    students.insert(newIndex, item);
+                  }),
+                  children: <Widget>[
+                    for (final student in students)
+                      Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
+                        key: Key('$student'),
+                        child: ListTile(
+                          leading: Icon(Icons.person_outline),
+                          title: Text(
+                            student,
+                            style: TextStyle(fontSize: 24),
+                            textAlign: TextAlign.center,
+                          ),
+                          trailing: Text(
+                            "☃️",
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        ),
+                        // leading: Icon(Icons.person_outline),
+                      )
+                  ],
+                );
+        }));
   }
 }
