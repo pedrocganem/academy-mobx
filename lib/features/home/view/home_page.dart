@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:mobx_demo/features/home/view/widgets/custom_drawer.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
+      drawer: CustomDrawer(
+        onLogout: () {},
+      ),
       appBar: AppBar(
-        toolbarHeight: 100,
-        title: Hero(
-            child: FlutterLogo(
-              size: 64,
-            ),
-            tag: "flutter-logo"),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
+        title: Hero(child: FlutterLogo(), tag: "flutter-logo"),
       ),
     );
   }

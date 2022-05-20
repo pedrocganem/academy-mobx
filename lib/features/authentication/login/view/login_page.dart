@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobx_demo/core/generics/resource.dart';
+import 'package:mobx_demo/core/widgets/dialogs/custom_error_dialog.dart';
 import 'package:mobx_demo/features/authentication/login/controller/login_controller.dart';
 import 'package:mobx_demo/features/authentication/register/view/register_page.dart';
 import 'package:mobx_demo/features/home/view/home_page.dart';
@@ -13,7 +14,6 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.blueGrey.shade300,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 36, vertical: 48),
         child: Column(
@@ -101,11 +101,11 @@ class LoginPage extends StatelessWidget {
                                 await showDialog(
                                         context: context,
                                         builder: (context) {
-                                          return Dialog(
-                                            backgroundColor:
-                                                Colors.blueGrey.shade300,
-                                            child: Text(resource.error!),
-                                          );
+                                          return CustomErrorDialog(
+                                              errorMessage:
+                                                  resource.error.toString(),
+                                              onPressed: () =>
+                                                  Navigator.pop(context));
                                         })
                                     .then((_) => _controller
                                         .isButtonAtLoadingStatus = false);
@@ -122,8 +122,7 @@ class LoginPage extends StatelessWidget {
                       child: isLoading
                           ? Lottie.network(
                               "https://assets9.lottiefiles.com/private_files/lf30_ykdoon9j.json",
-                              height: 36,
-                            )
+                              width: 36)
                           : Text(_controller.areCredentialsValid
                               ? "Entrar"
                               : "Credenciais inválidas"),
