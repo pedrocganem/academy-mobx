@@ -8,7 +8,9 @@
 2 - Registro
     - Email e senha c/ confirmação de senha. 
 
-3 - Persistência de Login
+3 - Persistência de Login: 
+    - Salvar o token no hive.
+    - Splash Screen.
 
 4 - Home c/ alguma coisa.
 
