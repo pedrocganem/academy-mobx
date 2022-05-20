@@ -12,7 +12,8 @@ class AppWidget extends StatelessWidget {
       themeMode: ThemeMode.dark,
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blueGrey, brightness: Brightness.dark),
       ),
       home: SplashPage(),
     );
