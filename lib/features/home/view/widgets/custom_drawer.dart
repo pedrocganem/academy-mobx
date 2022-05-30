@@ -17,6 +17,9 @@ class CustomDrawer extends StatelessWidget {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  SizedBox(
+                    height: 16,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white),

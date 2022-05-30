@@ -20,13 +20,17 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+            Flexible(
+              fit: FlexFit.tight,
               child: Hero(
                 tag: "flutter-logo",
                 child: FlutterLogo(
-                  size: 84,
+                  size: double.maxFinite,
                 ),
               ),
+            ),
+            SizedBox(
+              height: 16,
             ),
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -42,7 +46,7 @@ class LoginPage extends StatelessWidget {
                     onChanged: _controller.changeEmail,
                   );
                 }),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Observer(builder: (_) {
                   return TextField(
                     obscureText: !_controller.isPasswordVisible,
@@ -63,7 +67,7 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextButton(
-                        child: Text(
+                        child: const Text(
                           "Esqueci minha senha",
                           textAlign: TextAlign.start,
                         ),
